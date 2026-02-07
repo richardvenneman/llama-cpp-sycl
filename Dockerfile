@@ -26,9 +26,10 @@ RUN cmake -B build \
     -DGGML_SYCL_F16=${GGML_SYCL_F16} && \
     cmake --build build --config Release -j$(nproc)
 
-RUN mkdir -p /app/bin && \
+RUN mkdir -p /app/bin /app/lib && \
     cp build/bin/llama-server /app/bin/ && \
-    cp build/bin/llama-cli    /app/bin/
+    cp build/bin/llama-cli    /app/bin/ && \
+    find build -name "*.so*" -exec cp -P {} /app/lib/ \;
 
 # Runtime
 FROM intel/deep-learning-essentials:${ONEAPI_VERSION} AS runtime
@@ -47,6 +48,8 @@ RUN groupadd -r llama && \
 
 COPY --from=build /app/bin/llama-server /usr/local/bin/
 COPY --from=build /app/bin/llama-cli    /usr/local/bin/
+COPY --from=build /app/lib/             /usr/local/lib/
+RUN ldconfig
 ENV ZES_ENABLE_SYSMAN=1
 
 RUN mkdir -p /models && chown llama:llama /models
