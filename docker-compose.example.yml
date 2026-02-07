@@ -6,8 +6,6 @@ services:
     restart: unless-stopped
     devices:
       - /dev/dri:/dev/dri
-    group_add:
-      - "${RENDER_GID:-109}"  # stat -c '%g' /dev/dri/renderD128
     volumes:
       - /opt/llama.cpp/models:/models:ro
     ports:
@@ -15,10 +13,5 @@ services:
     environment:
       - ZES_ENABLE_SYSMAN=1
     command: ["--model", "/models/${LLAMA_MODEL:?Set LLAMA_MODEL in .env (e.g. LLAMA_MODEL=Qwen3-4B-Q4_K_M.gguf)}"]
-    read_only: true
     tmpfs:
       - /tmp:size=512m
-      - /run:size=32m
-      - /home/llama:size=64m
-    security_opt:
-      - no-new-privileges:true

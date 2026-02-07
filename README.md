@@ -60,17 +60,10 @@ docker compose up -d
 | `LLAMA_MODEL` | *(required)* | GGUF model filename in `/models` |
 | `LLAMA_HOST` | `0.0.0.0` | Bind address |
 | `LLAMA_PORT` | `8080` | Listen port |
-| `RENDER_GID` | `109` | GID of the `render` group on the host |
 
 ## GPU access
 
-The non-root user inside the container must be in the `render` group to access the GPU. Find your GID and pass it to Docker:
-
-```bash
-docker run --device /dev/dri --group-add $(stat -c '%g' /dev/dri/renderD128) ...
-```
-
-In `docker-compose.yml`, set the GID under `group_add` (default: `109`).
+The container needs `/dev/dri` passed through. The render group GID is auto-detected at startup — no manual configuration needed.
 
 ### Proxmox LXC
 

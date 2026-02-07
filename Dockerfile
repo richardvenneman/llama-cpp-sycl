@@ -39,7 +39,7 @@ LABEL org.opencontainers.image.title="llama-cpp-sycl" \
     org.opencontainers.image.source="https://github.com/richardvenneman/llama-cpp-sycl"
 
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends libgomp1 curl && \
+    apt-get install -y --no-install-recommends libgomp1 curl gosu && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -57,7 +57,6 @@ VOLUME /models
 
 COPY --chmod=755 entrypoint.sh /usr/local/bin/entrypoint.sh
 
-USER llama
 EXPOSE 8080
 
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \

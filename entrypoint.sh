@@ -12,22 +12,29 @@ if [ ! -d /dev/dri ]; then
     exit 1
 fi
 
+# Auto-detect render group GID and add llama user to it
+RENDER_GID=$(stat -c '%g' /dev/dri/renderD128 2>/dev/null)
+if [ -n "$RENDER_GID" ] && [ "$RENDER_GID" != "0" ]; then
+    groupadd -g "$RENDER_GID" -o render 2>/dev/null || true
+    usermod -aG render llama 2>/dev/null || true
+fi
+
 LLAMA_HOST="${LLAMA_HOST:-0.0.0.0}"
 LLAMA_PORT="${LLAMA_PORT:-8080}"
 
 case "${1:-}" in
     llama-cli)
         shift
-        exec llama-cli "$@"
+        exec gosu llama llama-cli "$@"
         ;;
     llama-server)
         shift
-        exec llama-server --host "$LLAMA_HOST" --port "$LLAMA_PORT" "$@"
+        exec gosu llama llama-server --host "$LLAMA_HOST" --port "$LLAMA_PORT" "$@"
         ;;
     bash|sh)
         exec "$@"
         ;;
     *)
-        exec llama-server --host "$LLAMA_HOST" --port "$LLAMA_PORT" "$@"
+        exec gosu llama llama-server --host "$LLAMA_HOST" --port "$LLAMA_PORT" "$@"
         ;;
 esac
