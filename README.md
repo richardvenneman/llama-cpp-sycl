@@ -4,6 +4,16 @@ Run [llama.cpp](https://github.com/ggml-org/llama.cpp) with the **SYCL backend o
 
 ## Quick start
 
+Download a GGUF model (e.g. from [Hugging Face](https://huggingface.co/models?sort=trending&search=gguf)):
+
+```bash
+mkdir -p models
+curl -L -o models/Qwen3-4B-Q4_K_M.gguf \
+  https://huggingface.co/Qwen/Qwen3-4B-GGUF/resolve/main/Qwen3-4B-Q4_K_M.gguf
+```
+
+Run:
+
 ```bash
 docker run -d \
   --device /dev/dri \
