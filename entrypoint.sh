@@ -5,7 +5,6 @@ if [ -f /opt/intel/oneapi/setvars.sh ]; then
     source /opt/intel/oneapi/setvars.sh --force > /dev/null 2>&1 || true
 fi
 
-export LD_LIBRARY_PATH="/usr/local/lib/llama${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
 export ZES_ENABLE_SYSMAN=1
 
 if [ ! -d /dev/dri ]; then

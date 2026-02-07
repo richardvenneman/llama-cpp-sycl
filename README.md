@@ -87,6 +87,7 @@ docker build -t llama-cpp-sycl .
 
 ## Known issues
 
+- **Cold start**: The first request after startup is ~60-70% slower due to SYCL JIT kernel compilation.
 - **Flash Attention** is auto-disabled on iGPUs (CPU tensor assignment issue).
 - **Ollama Vulkan backend** produces garbage output on Meteor Lake.
 - **IPEX-LLM** is archived and its fork is poorly maintained.

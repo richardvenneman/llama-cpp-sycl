@@ -18,20 +18,17 @@ RUN git clone https://github.com/ggml-org/llama.cpp.git . && \
     git checkout ${LLAMA_CPP_COMMIT}
 
 RUN cmake -B build \
-    -DGGML_NATIVE=OFF \
     -DGGML_SYCL=ON \
     -DCMAKE_C_COMPILER=icx \
     -DCMAKE_CXX_COMPILER=icpx \
-    -DGGML_BACKEND_DL=ON \
-    -DGGML_CPU_ALL_VARIANTS=ON \
+    -DGGML_NATIVE=OFF \
     -DLLAMA_BUILD_TESTS=OFF \
     -DGGML_SYCL_F16=${GGML_SYCL_F16} && \
     cmake --build build --config Release -j$(nproc)
 
-RUN mkdir -p /app/lib /app/bin && \
+RUN mkdir -p /app/bin && \
     cp build/bin/llama-server /app/bin/ && \
-    cp build/bin/llama-cli    /app/bin/ && \
-    find build -name "*.so*" -exec cp -P {} /app/lib/ \;
+    cp build/bin/llama-cli    /app/bin/
 
 # Runtime
 FROM intel/deep-learning-essentials:${ONEAPI_VERSION} AS runtime
@@ -50,9 +47,6 @@ RUN groupadd -r llama && \
 
 COPY --from=build /app/bin/llama-server /usr/local/bin/
 COPY --from=build /app/bin/llama-cli    /usr/local/bin/
-COPY --from=build /app/lib/             /usr/local/lib/llama/
-
-ENV LD_LIBRARY_PATH="/usr/local/lib/llama${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
 ENV ZES_ENABLE_SYSMAN=1
 
 RUN mkdir -p /models && chown llama:llama /models
