@@ -89,6 +89,17 @@ docker build -t llama-cpp-sycl .
 | `LLAMA_CPP_COMMIT` | `34ba7b5a` (b7965) | llama.cpp git commit |
 | `GGML_SYCL_F16` | `OFF` | Enable FP16 SYCL kernels |
 
+## Benchmarks
+
+Intel Core Ultra 5 125H — Meteor Lake iGPU (7 Xe-cores), 64 GB RAM, Proxmox LXC.
+
+| Model | Prompt eval | Generation |
+|---|---|---|
+| Qwen3 1.7B Q4_K_M | 30 t/s | 13.5 t/s |
+| Qwen3 4B Q4_K_M | 20 t/s | 8.8 t/s |
+
+Warm results (after SYCL JIT compilation). First request is ~60-70% slower.
+
 ## Tested hardware
 
 - Intel Core Ultra 5 125H — Meteor Lake iGPU (7 Xe-cores)
