@@ -46,9 +46,10 @@ docker run -it --rm \
 
 ### Docker Compose
 
-Copy `docker-compose.yml` to your server and adjust the model path:
-
 ```bash
+cp docker-compose.example.yml docker-compose.yml
+cp .env.example .env
+# edit .env and docker-compose.yml to match your setup
 docker compose up -d
 ```
 
