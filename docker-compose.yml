@@ -1,0 +1,26 @@
+services:
+  llama:
+    build: .
+    image: llama-cpp-sycl
+    container_name: llama-sycl
+    restart: unless-stopped
+    devices:
+      - /dev/dri:/dev/dri
+    group_add:
+      - "${RENDER_GID:-109}"  # stat -c '%g' /dev/dri/renderD128
+    volumes:
+      - /opt/llama.cpp/models:/models:ro
+    ports:
+      - "8080:8080"
+    environment:
+      - ZES_ENABLE_SYSMAN=1
+      # - LLAMA_HOST=0.0.0.0
+      # - LLAMA_PORT=8080
+    command: ["--model", "/models/Qwen3-4B-Q4_K_M.gguf"]
+    read_only: true
+    tmpfs:
+      - /tmp:size=512m
+      - /run:size=32m
+      - /home/llama:size=64m
+    security_opt:
+      - no-new-privileges:true
