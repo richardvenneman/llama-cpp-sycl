@@ -14,9 +14,7 @@ services:
       - "8080:8080"
     environment:
       - ZES_ENABLE_SYSMAN=1
-      # - LLAMA_HOST=0.0.0.0
-      # - LLAMA_PORT=8080
-    command: ["--model", "/models/Qwen3-4B-Q4_K_M.gguf"]
+    command: ["--model", "/models/${LLAMA_MODEL:?Set LLAMA_MODEL in .env (e.g. LLAMA_MODEL=Qwen3-4B-Q4_K_M.gguf)}"]
     read_only: true
     tmpfs:
       - /tmp:size=512m

@@ -52,12 +52,14 @@ Copy `docker-compose.yml` to your server and adjust the model path:
 docker compose up -d
 ```
 
-## Environment variables
+## Configuration
 
 | Variable | Default | Description |
 |---|---|---|
+| `LLAMA_MODEL` | *(required)* | GGUF model filename in `/models` |
 | `LLAMA_HOST` | `0.0.0.0` | Bind address |
 | `LLAMA_PORT` | `8080` | Listen port |
+| `RENDER_GID` | `109` | GID of the `render` group on the host |
 
 ## GPU access
 
