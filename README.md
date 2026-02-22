@@ -17,9 +17,9 @@ Run:
 ```bash
 docker run -d \
   --device /dev/dri \
-  -v /path/to/models:/models:ro \
+  -v $(pwd)/models:/models:ro \
   -p 8080:8080 \
-  llama-cpp-sycl \
+  ghcr.io/richardvenneman/llama-cpp-sycl \
   --model /models/Qwen3-4B-Q4_K_M.gguf
 ```
 
@@ -40,7 +40,7 @@ curl http://localhost:8080/v1/chat/completions \
 docker run -it --rm \
   --device /dev/dri \
   -v /path/to/models:/models:ro \
-  llama-cpp-sycl \
+  ghcr.io/richardvenneman/llama-cpp-sycl \
   llama-cli --model /models/your-model.gguf -cnv
 ```
 
