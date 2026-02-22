@@ -4,6 +4,10 @@ Run [llama.cpp](https://github.com/ggml-org/llama.cpp) with the **SYCL backend o
 
 ## Quick start
 
+```bash
+docker pull ghcr.io/richardvenneman/llama-cpp-sycl
+```
+
 Download a GGUF model (e.g. from [Hugging Face](https://huggingface.co/models?sort=trending&search=gguf)):
 
 ```bash
